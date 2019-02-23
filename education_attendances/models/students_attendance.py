@@ -15,7 +15,7 @@ class EducationStudentsAttendance(models.Model):
     attendance_created = fields.Boolean(string='Attendance Created')
     all_marked_morning = fields.Boolean(string='All students are present in the morning')
     all_marked_afternoon = fields.Boolean(string='All students are present in the afternoon')
-    state = fields.Selection([('draft', 'Draft'), ('done', 'Done')], default='draft')
+    state = fields.Selection([('draft', 'Draft'), ('done', 'Done'),], default='draft')
     company_id = fields.Many2one('res.company', string='Company',
                                  default=lambda self: self.env['res.company']._company_default_get())
     academic_year = fields.Many2one('education.academic.year', string='Academic Year',
@@ -116,7 +116,7 @@ class EducationAttendanceLine(models.Model):
     present_afternoon = fields.Boolean(string='After Noon')
     full_day_absent = fields.Integer(string='Full Day')
     half_day_absent = fields.Integer(string='Half Day')
-    state = fields.Selection([('draft', 'Draft'), ('done', 'Done')], string='State', default='draft')
+    state = fields.Selection([('draft', 'Draft'), ('done', 'Done'),], string='State', default='draft')
     company_id = fields.Many2one('res.company', string='Company',
                                  default=lambda self: self.env['res.company']._company_default_get())
     academic_year = fields.Many2one('education.academic.year', string='Academic Year',
