@@ -1,5 +1,7 @@
 
 from odoo import models, fields, api
+import pandas as pd
+import numpy
 
 
 class EducationExamResultsNew(models.Model):
@@ -75,6 +77,58 @@ class EducationExamResultsNew(models.Model):
     show_prac=fields.Boolean('Show Prac')
     show_paper=fields.Boolean('Show Papers')
     result_type_count=fields.Integer("result type Count")
+
+    @api.multi
+    def calculate_merit_list(self,exam,level):
+        result_ids=[]
+        general_total=[]
+        net_total=[]
+        optional_fail=[]
+        general_fail=[]
+        extra_fail=[]
+        roll_no=[]
+        section=[]
+        exam_no=[]
+        records=self.env['education.exam.results.new'].search([('exam_id','=',exam.id),('class_id.class_id','=',level.id)])
+        for rec in records:
+            result_ids.append(rec.id)
+            general_total.append(rec.general_obtained)
+            net_total.append(rec.net_obtained)
+            optional_fail.append(rec.optional_fail_count)
+            general_fail.append(rec.general_fail_count)
+            extra_fail.append(rec.extra_fail_count)
+            roll_no.append(rec.student_history.roll_no)
+            section.append(rec.student_history.section)
+            exam_no.append(exam.id)
+        data={
+            'result':result_ids,
+            'gen_total':general_total,
+            'net_total': net_total,
+            'gen_fail': general_fail,
+            'op_fail': optional_fail,
+            'ext_fail': extra_fail,
+            'section': section,
+            'roll': roll_no,
+            'exam': exam_no,
+            'merit_class':0,
+            'merit_section':0,
+            'merit_group':0,
+
+        }
+        df = pd.DataFrame(data)
+        df1=df.sort_values(['gen_fail','net_total', 'op_fail','ext_fail','roll'], ascending=[True, False,True,True,True])
+        df= df1.reset_index(drop=True)
+        for index, row in df.iterrows():
+            df.loc[index,'merit_class' ] = index+1
+        grouped = df.groupby('section')
+        for name, group in grouped:
+            df_section = df[(df['section'] == name)]
+            df_section_sorted=df_section.sort_index()
+            df_section_sorted.reset_index(drop=True)
+            df_section_sorted.to_csv(r'C:\Users\Khan Store\Downloads\pandas\df_section_'+name.id +'.csv')
+        df.to_csv(r'C:\Users\Khan Store\Downloads\pandas\df.csv')
+        print (df)
+
 
     @api.onchange('general_gp','general_count','optional_gp','optional_count')
     def get_general_gpa(self):
