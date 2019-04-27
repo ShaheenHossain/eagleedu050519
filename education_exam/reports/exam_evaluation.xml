@@ -5,9 +5,6 @@
         <template id="external_layout_evaluation">
         <div class="header">
             <div class="row">
-                 <div style="width: 10%;float: left;">
-                    <img src='/web/binary/company_logo' style="width:100px"/>
-                </div>
                 <div style="width: 90%;float: left;padding-left:10px;text-align:center;">
                     <h4 style="text-transform: uppercase;" t-if="res_company.name"><span t-field="res_company.name"/></h4>
                     <h5 t-if="res_company.street"><span t-field="res_company.street"/><t t-if="res_company.street2"><span t-field="res_company.street2"/> </t></h5>
@@ -23,10 +20,14 @@
         <!--<div class="footer o_boxed_footer">-->
            <div class="footer">
                <div class="row">
+                    <br/><br/><br/><br/>
+               </div>
+               <div class="row">
                    <div class="col-xs-4" style="font-size:16px;">Signature of Class Teacher</div>
                    <div class="col-xs-4" style="font-size:16px;">Compared By</div>
                    <div class="col-xs-4" style="font-size:16px;">Signature of The Principal</div>
                </div>
+                <span>Page </span><span class="page" /> of <span class="topage" />
             </div>
         <!--</div>-->
     </template>
@@ -40,11 +41,22 @@
                                 Paper
                             </td>
                         </t>
-                        <td>Tut</td>
+                        <t t-if="show_tut_column==1">
+                            <td>
+                                Mth
+                            </td>
+                        </t>
                         <td>Sub</td>
                         <td>Obj</td>
-                        <td>Prac</td>
-                        <td>Ev</td>
+                        <t t-if="show_prac_column==1">
+                            <td>
+                                Prac
+                            </td>
+                        </t>
+                        <td>Tot</td>
+                        <t t-if="converted_report>0">
+                            <td>Con</td>
+                        </t>
                     </tr>
                 </t>
 
@@ -75,20 +87,22 @@
 
 
                                             </t>
-                                            <td>
-                                                <t t-if="paper.pass_rule_id.tut_mark>0">
+                                            <t t-if="show_tut_column>0">
+                                                <td>
+                                                    <t t-if="paper.pass_rule_id.tut_mark>0">
 
-                                                    <t t-if="paper.tut_pr==True">
-                                                        <t t-esc="round(paper.tut_obt)"/>
+                                                        <t t-if="paper.tut_pr==True">
+                                                            <t t-esc="round(paper.tut_obt)"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            A
+                                                        </t>
                                                     </t>
                                                     <t t-else="">
-                                                        A
+                                                        --
                                                     </t>
-                                                </t>
-                                                <t t-else="">
-                                                    --
-                                                </t>
-                                            </td>
+                                                </td>
+                                            </t>
                                             <td>
                                                 <t t-if="paper.pass_rule_id.subj_mark>0">
                                                     <t t-if="paper.subj_pr==True">
@@ -115,27 +129,37 @@
                                                     --
                                                 </t>
                                             </td>
-                                            <td>
-                                                <t t-if="paper.pass_rule_id.prac_mark>0">
-                                                    <t t-if="paper.prac_pr==True">
-                                                        <t t-esc="round(paper.prac_obt)"/>
+                                            <t t-if="show_prac_column>0">
+                                                <td>
+                                                    <t t-if="paper.pass_rule_id.prac_mark>0">
+                                                        <t t-if="paper.prac_pr==True">
+                                                            <t t-esc="round(paper.prac_obt)"/>
+                                                        </t>
+                                                        <t t-else="">
+                                                            A
+                                                        </t>
                                                     </t>
                                                     <t t-else="">
-                                                        A
+                                                        --
                                                     </t>
-                                                </t>
-                                                <t t-else="">
-                                                    --
-                                                </t>
-                                            </td>
+                                                </td>
+                                            </t>
                                             <t t-if="paper_first">
                                                 <td >
-                                                    <t t-esc="round(results[student]['subjects'][subject][exam]['res'].subject_obt)"/>
+                                                    <t t-set="subj_obtained" t-value="round(results[student]['subjects'][subject][exam]['res'].subject_obt)"/>
+                                                    <t t-esc="subj_obtained"/>
                                                 </td>
                                             </t>
                                             <t t-else="">
                                                 <td >
                                                     <t t-esc="results[student]['subjects'][subject][exam]['res'].letter_grade"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="converted_report>0">
+                                                <t t-set="convert_resue"  t-value="2"/>
+                                                   <!--t-value="get_convert_resue()"/>-->
+                                                <td>
+                                                    <t t-esc="round(subj_obtained*convert_resue)"/>
                                                 </td>
                                             </t>
                                         </tr>
@@ -147,7 +171,7 @@
                                                             2nd
                                                         </td>
                                                 </t>
-                                                <td colspan="4"></td>
+                                                <td t-att-colspan="show_tut_column+show_prac_column+2"></td>
                                                 <td>
                                                     <t t-esc="results[student]['subjects'][subject][exam]['res'].letter_grade"/>
                                                 </td>
@@ -161,11 +185,11 @@
         </template>
 
         <template id="evaluation_data_layout">
-
             <div class="page">
 
                             <div class="oe_structure">
-<t t-set="show_mark_heading" t-value="1"/>
+                                <t t-set="converted_report" t-value="get_converted_report(docs)"/>
+                                <t t-set="show_mark_heading" t-value="1"/>
                                 <div class="row">
                                     <table width="100%" >
                                             <tr><td colspan ="100%" >
@@ -208,14 +232,16 @@
 
                                         </tr>
                                         <t t-foreach="get_students(section)" t-as="student">
-                                            <t t-set="show_paper_column" t-value="1"/>
+                                            <t t-set="show_paper_column" t-value="hide_paper(docs)"/>
+                                            <t t-set="show_tut_column" t-value="hide_tut(docs)"/>
+                                            <t t-set="show_prac_column" t-value="hide_prac(docs)"/>
                                         <tbody style="page-break-inside:avoide !important;">
                                             <tr>
                                                 <td style="vertical-align:middle;">
                                                     <t t-esc="student.student_id.student_id"/>
                                                 </td>
                                                 <td style="vertical-align:middle;" >
-                                                    <t t-esc="student.student_id.roll_no"/>
+                                                    <t t-esc='"{:02d}".format(student.student_id.roll_no)'/>
                                                 </td>
                                                 <td style="vertical-align:middle;">
                                                     <t t-esc="student.student_id.name"/>

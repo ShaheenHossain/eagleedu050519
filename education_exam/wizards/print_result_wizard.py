@@ -15,12 +15,26 @@ class educationExamResultWizard(models.TransientModel):
     section=fields.Many2one('education.class.division')
     specific_student=fields.Boolean('For a specific Student')
     student=fields.Many2one('education.student','Student')
+    report_type=fields.Selection([('1','Regular'),('2','Converted')],string="Report Type",default='1',required='True')
     state=fields.Selection([('draft','Draft'),('done','Done')],compute='calculate_state')
+    hide_paper=fields.Boolean("Hide Papers")
+    hide_tut=fields.Boolean("Hide Monthly")
+    hide_subjective=fields.Boolean("Hide Subjective")
+    hide_objective=fields.Boolean("Hide objective")
+    hide_prac=fields.Boolean("Hide Practical")
+    hide_total=fields.Boolean("Hide Total")
     @api.multi
     def del_generated_results(self):
         for exam in self.exams:
             records=self.env['education.exam.results.new'].search([('exam_id','=',exam.id)]).unlink()
-
+    @api.multi
+    def print_marksheet(self):
+        res = {
+            'type': 'ir.actions.client',
+            'name': 'action_exam_evaluation',
+            'tag': 'results.result',
+        }
+        return res
     @api.multi
     def calculate_state(self):
         results=self.env[('education.exam.results')].search([('academic_year','=',self.academic_year.id),('class_id','=','level')])

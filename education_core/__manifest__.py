@@ -11,13 +11,6 @@
     'data': [
         'security/education_security.xml',
         'security/ir.model.access.csv',
-        'data/gurdian.student.relation.csv',
-        'data/education.class.csv',
-        'data/education.academic.year.csv',
-        'data/education.class.section.csv',
-        'data/education.division.csv',
-        'data/education_core.xml',
-        'data/education.faculty.csv',
         'views/education_main_menu.xml',
         'views/education_res_partner.xml',
         'views/education_application_reject.xml',
@@ -47,13 +40,7 @@
         'reports/student_application_report.xml',
         'reports/faculty_id_card.xml',
         'reports/exam_marksheet.xml',
-        'data/education.subject.csv',
-        'data/education.syllabus.csv',
-        'data/res.country.state.csv',
-        'data/religion.religion.csv',
-        'data/education.class.division.csv',
-        'data/education.admission.register.csv',
-        'data/education.month.csv',
+
     ],
     'demo': [
         'demo/education_data.xml',
