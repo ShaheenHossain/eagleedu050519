@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': 'Eagle ERP Exam Management',
+    'name': 'Educational Exam Management',
     'version': '11.0.1.0.0',
-    'summary': """The Ultimate solution for the Examination management""",
+    'summary': """Sneak the Examination management in Educational ERP""",
     'description': 'An easy way to handle the examinations in an educational '
                    'system with better reports and exam valuation and exam result '
                    'facilities',
-    'category': 'Education',
+    'category': 'Industries',
     'author': 'SM Ashraf',
     'company': 'Eagle It Solutions',
     'maintainer': 'Eagle ERP',
