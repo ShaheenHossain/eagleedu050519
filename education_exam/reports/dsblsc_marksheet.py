@@ -136,7 +136,7 @@ class acdemicTranscripts(models.AbstractModel):
         return grades
 
 
-    def half_round_up(val):
+    def half_round_up(self,val):
         if (float(val) % 1) >= 0.5:
             x = math.ceil(val)
         else:

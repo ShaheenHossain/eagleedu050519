@@ -150,11 +150,17 @@ class examEvaluation(models.AbstractModel):
         paper_hide=obj.hide_paper
         return paper_hide
     def hide_tut(self,obj):
-        paper_hide=obj.hide_paper
+        paper_hide=obj.hide_tut
+        return paper_hide
+    def hide_obj(self,obj):
+        paper_hide=obj.hide_objective
         return paper_hide
     def hide_prac(self,obj):
-        paper_hide=obj.hide_paper
+        paper_hide=obj.hide_prac
         return paper_hide
+    def get_convert_resue(self,subject):
+        ratio=subject.subject_id
+        return ratio
 
 
     def get_converted_report(self,obj):
@@ -187,10 +193,12 @@ class examEvaluation(models.AbstractModel):
             'get_gpa': self.get_gpa,
             'hide_paper': self.hide_paper,
             'hide_tut': self.hide_tut,
+            'hide_obj': self.hide_obj,
             'hide_prac': self.hide_prac,
             'get_converted_report': self.get_converted_report,
             'get_lg': self.get_lg,
             'get_exam_obtained_total': self.get_exam_obtained_total,
             'check_optional': self.check_optional,
             'get_results': self.get_results,
+            'half_round_up': self.env['report.education_exam.report_dsblsc_marksheet'].half_round_up,
         }
