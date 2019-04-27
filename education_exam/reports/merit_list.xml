@@ -95,6 +95,7 @@
                                 </div>
                             <div class="row">
                                 <table width="100%">
+                                    <t t-set="converted_report" t-value="get_converted_report(docs)"/>
 
                                         <tr class="dont_split"><td rowspan="2">Roll</td><td rowspan="2">ID</td>
                                             <td rowspan="2" style="text-align : center;">Name</td>
@@ -103,7 +104,8 @@
                                                 <t t-foreach="exam_list" t-as="exam">
                                                     <td colspan="3"><t t-esc="exam.exam_type.name"/></td>
                                                 </t>
-                                                <td colspan="3">Total</td><p>&lt;/tr&gt;</p><p>&lt;tr&gt;</p>
+                                                <td colspan="3">
+                                                    Total</td><p>&lt;/tr&gt;</p><p>&lt;tr&gt;</p>
                                                 <t t-foreach="exam_list" t-as="exam">
                                                     <td rowspan="2" style="text-align : center;">GPA </td>
                                                     <!--<td rowspan="2" style="text-align : center;">GPA <p font-size="8">(with 4th subjects)</p>-->
@@ -114,7 +116,10 @@
 
                                         <t t-else="">
                                             <td rowspan="2" style="text-align : center;">GPA</td>
-                                            <td  rowspan="2" style="text-align : center;">Total Marks</td>
+                                            <td  rowspan="2" style="text-align : center;">Converted Marks</td>
+                                            <t t-if="converted_report">
+                                                <td  rowspan="2" style="text-align : center;">Total Marks</td>
+                                            </t>
                                             <td rowspan="2" style="text-align : center;">Position In Section</td>
                                             <td rowspan="2" style="text-align : center;">Position In Class</td>
                                             <p>&lt;/tr&gt;</p>
@@ -157,7 +162,10 @@
                                                             <!--<t t-esc="'('+str(fail_count)+'F)'"/>-->
                                                         <!--</t>-->
                                                     <!--</td>-->
-                                                    <td style="text-align : center;"><t t-esc="result_line.net_obtained_converted"/></td>
+                                                    <t t-if="converted_report">
+                                                        <td style="text-align : center;"><t t-esc="result_line.net_obtained_converted"/></td>
+                                                    </t>
+                                                    <td style="text-align : center;"><t t-esc="result_line.net_obtained"/></td>
                                                     <td style="text-align : center;"><t t-esc="result_line.merit_section"/></td>
                                                     <td style="text-align : center;"><t t-esc="result_line.merit_class"/></td>
                                                 </tr>

@@ -136,7 +136,7 @@
         />
         <report
             id="action_merit_list"
-            model="academic.transcript"
+            model="education.exam.result.wizard"
             string="Merit List"
             report_type="qweb-html"
             paperformat="A4_portrait"

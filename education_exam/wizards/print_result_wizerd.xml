@@ -46,7 +46,8 @@
                                 <button name="%(action_test_marksheet)d" string="Marksheet A4 Portrait" type="action" />
                                 <button name="%(action_marksheet_converted)d" string="Marksheet (Converted)" type="action" />
                                 <button name="%(action_exam_evaluation)d" string="Evaluation" type="action" />
-                                <button name="get_merit_list" string="meritList" type="object" />
+                                <button name="%(action_merit_list)d" string="MeritList" type="action" />
+                                <button name="get_merit_list" string="Generate meritList" type="object" />
                             </group>
                         </page>
                     </notebook>
