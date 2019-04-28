@@ -16,6 +16,8 @@
                             <field name="sports"/>
                             <field name="uniform"/>
                             <field name="cultural"/>
+                            <field name="merit_class"/>
+                            <field name="merit_section"/>
                         </group>
                         <group>
                             <field name="level_id" readonly="1"/>
